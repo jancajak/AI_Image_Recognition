@@ -37,4 +37,4 @@ history = model.fit(
     validation_data=(valid_images, valid_labels)
 )
 
-model.save("dist/fashion_model.h5")
+model.save("fashion_model.h5")

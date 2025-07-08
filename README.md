@@ -80,9 +80,9 @@ Copy `fashion_model.h5` into `dist/` next to `predict_gui.exe`.
 - [ ] Switch to Conv2D + MaxPool architecture  
 - [ ] Train for 10–15 epochs  
 - [ ] Show image preview before prediction  
-- [ ] Display confidence percentages  
 - [ ] Add drag-and-drop support  
-- [ ] Bundle model file inside the `.exe`  
+- [ ] Bundle model file inside the `.exe`
+- [ ] Increase accuracy of model to at least 90% given same MNIST dataset
 
 ## 📚 Credits
 Created by **Jakub Janca** using:

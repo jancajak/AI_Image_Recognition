@@ -4,9 +4,9 @@ from tkinter import filedialog, messagebox
 from PIL import Image, ImageOps
 import numpy as np
 
-model = tf.keras.models.load_model("fashion_model.h5")
+model = tf.keras.models.load_model("fashion_model.keras")
 
-class_names = [    
+class_names = [
     "T-shirt/top", "Trouser", "Pullover", "Dress", "Coat",
     "Sandal", "Shirt", "Sneaker", "Bag", "Ankle boot"
 ]
@@ -15,15 +15,14 @@ def predict_image(path):
     img = Image.open(path).convert("RGB")
 
     img = img.convert("L")
-    img = ImageOps.invert(img)
-    img = img.resize((28, 28))
-    img = np.array(img).astype("float32") / 255.0
-    img = img.reshape(1, 28, 28)
+    # img = ImageOps.invert(img)
+    img = ImageOps.fit(img, (28, 28), method=Image.Resampling.LANCZOS)
+    img = np.array(img, dtype="float32") / 255
+    img = img.reshape(1, 28, 28, 1)
 
-    logits = model.predict(img)
-    pred = np.argmax(logits)
-    probs = tf.nn.softmax(logits[0])
-    confidence = probs[pred].numpy()
+    probs = model.predict(img, verbose=0)[0]
+    pred = np.argmax(probs)
+    confidence = float(probs[pred])
     return f"{class_names[pred]} ({confidence:.2%} confidence)"
 
 def upload_and_predict():

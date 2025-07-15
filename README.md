@@ -72,8 +72,8 @@ Copy `fashion_model.h5` into `dist/` next to `predict_gui.exe`.
 > The `.exe` can be shared or used on any Windows machine—no Python required.
 
 ## 🧪 Known Limitations
-- Model now uses CNN (Conv2D + MaxPool) and trains for 15 epochs → ~**82–90%** accuracy  
-- May still misclassify noisy or non-centered images from real-world sources  
+- Model now uses CNN (Conv2D + MaxPool) and trains for 15 epochs → ~**82–92%** accuracy  
+- Still misclassify noisy or non-centered images from real-world sources  
 - Accuracy can vary with lighting, inversion mismatch, or small/busy images  
 - Still room to improve generalization and robustness for practical use
 
@@ -87,10 +87,10 @@ Copy `fashion_model.h5` into `dist/` next to `predict_gui.exe`.
 - [x] Preprocessed images to match shape `(28, 28, 1)` and normalized to `[0, 1]`  
 - [x] Prediction function now correctly interprets softmax output  
 - [x] Image preview supported (optional for debugging)  
-- [x] Accuracy increased significantly with CNN and correct preprocessing  
+- [x] Accuracy increased significantly with CNN and correct preprocessing 
+- [x] Add `Dropout` layers to reduce overfitting (improved realworld accuracy by large margin)
 
-### 🔜 Planned / Improvements
-- [ ] Add `Dropout` layers to reduce overfitting  
+### 🔜 Planned / Improvements 
 - [ ] Add `BatchNormalization` for more stable and faster training  
 - [ ] Use `EarlyStopping` to avoid unnecessary training epochs  
 - [ ] Add `ImageDataGenerator` for rotation/zoom/shift augmentation  

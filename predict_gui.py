@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 from PIL import Image, ImageOps
 import numpy as np
+from PIL import ImageEnhance
 
 model = tf.keras.models.load_model("fashion_model.keras")
 
@@ -15,7 +16,8 @@ def predict_image(path):
     img = Image.open(path).convert("RGB")
 
     img = img.convert("L")
-    # img = ImageOps.invert(img)
+    img = ImageOps.invert(img)
+    img = ImageEnhance.Contrast(img).enhance(2.0)
     img = ImageOps.fit(img, (28, 28), method=Image.Resampling.LANCZOS)
     img = np.array(img, dtype="float32") / 255
     img = img.reshape(1, 28, 28, 1)

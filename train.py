@@ -1,6 +1,9 @@
 import tensorflow as tf;
 import numpy as np
 
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.callbacks import EarlyStopping
+
 fashion_mnist = tf.keras.datasets.fashion_mnist
 (train_images, train_labels), (valid_images, valid_labels) = fashion_mnist.load_data()
 
@@ -15,13 +18,19 @@ number_of_classes
 
 model = tf.keras.Sequential([
     tf.keras.layers.Input(shape=(28, 28, 1)),
+
     tf.keras.layers.Conv2D(32, (3, 3), activation='relu'),
+    tf.keras.layers.BatchNormalization(),
     tf.keras.layers.MaxPooling2D(),
+
     tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
+    tf.keras.layers.BatchNormalization(),
     tf.keras.layers.MaxPooling2D(),
+
     tf.keras.layers.Flatten(),
     tf.keras.layers.Dropout(0.3),
     tf.keras.layers.Dense(128, activation='relu'),
+    tf.keras.layers.BatchNormalization(),
     tf.keras.layers.Dropout(0.3),
     tf.keras.layers.Dense(10, activation='softmax')
 ])
@@ -34,12 +43,23 @@ model.compile(
     metrics=['accuracy']
 )
 
+datagen = ImageDataGenerator(
+    rotation_range=15,
+    width_shift_range=0.1,
+    height_shift_range=0.1,
+    zoom_range=0.1,
+)
+
+datagen.fit(train_images)
+
+early_stop = EarlyStopping(monitor='val_loss', patience=3, restore_best_weights=True)
+
 history = model.fit(
-    train_images,
-    train_labels,
-    epochs=15,
+    datagen.flow(train_images, train_labels, batch_size=64),
+    validation_data=(valid_images, valid_labels),
+    epochs=40,
+    callbacks=[early_stop],
     verbose=True,
-    validation_data=(valid_images, valid_labels)
 )
 
 val_loss, val_acc = model.evaluate(valid_images, valid_labels, verbose=1)
